@@ -7,13 +7,8 @@ public class Utils {
 
     private static Utils instance = null;
 
-    public Utils()
-    {
-
-    }
-
     /**
-     * Use syncronized to implement multithreading
+     * Use synchronize to implement multithreading
      * @return
      */
     public static Utils getInstance() {
@@ -25,9 +20,14 @@ public class Utils {
     }
 
 
-
-    public static boolean isIpFormatted( String ipAddress )
+    /**
+     * Stupid implementation used only to try the tests, i have to use simply a matcher
+     * @param ipAddress
+     * @return
+     */
+    public boolean isIpFormatted( String ipAddress )
     {
+
         if ( ipAddress == null )
             return false;
 
@@ -72,6 +72,57 @@ public class Utils {
                 return false;
             }
         }
+
+        return true;
+    }
+
+    /**
+     * Stupid implementation used only to try the tests, i have to use simply a matcher
+     * https://en.wikipedia.org/wiki/Email_address
+     * @param email
+     * @return
+     */
+    public boolean isEmailFormatted( String email )
+    {
+
+        if ( email == null )
+            return false;
+
+        if ( email.length() == 0 || email.isEmpty() )
+            return false;
+
+        if ( email.length() < 3 || email.length() > 254)
+            return false;
+
+        if ( !email.contains("@") )
+            return false;
+
+        int ats = 0 ;
+
+        for (int i = 0; i < email.length(); i++) {
+            if (email.charAt(i) == '@' )
+                ats++;
+        }
+
+        if ( email.split("@")[0].length() > 64 )
+            return false;
+
+        if ( email.split("@")[0].charAt(0) == '.' )
+            return false;
+
+        if ( email.split("@")[0].charAt(email.split("@")[0].length() - 1) == '.' )
+            return false;
+
+        if ( email.split("@")[0].contains(".."))
+            return false;
+
+        if ( ats != 1 )
+            return false;
+
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if ( !email.matches(emailPattern) )
+            return false;
 
         return true;
     }
